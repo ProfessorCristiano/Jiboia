@@ -19,12 +19,28 @@ def cadeia(valor):
 def boleano(valor):
     return bool(valor)
 
+def executar(instrucao):
+    return lambda: eval(instrucao)
+
 def se(condicao, entao, senao=None):
+    if condicao:
+        if callable(entao):
+            entao()
+        else:
+            escreva(entao)
+    elif senao is not None:
+        if callable(senao):
+            senao()
+        else:
+            escreva(senao)
+
+
+'''def se(condicao, entao, senao=None):
     if condicao:
         entao()
     elif senao:
         senao()
-
+'''
 def enquanto(condicao_func, corpo_func):
     while condicao_func():
         corpo_func()
