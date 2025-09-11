@@ -1,8 +1,25 @@
 '''
-Cristiano Teixeira
+   Nome: jiboia.py
+   Autor: Cristiano Teixeira
+   Função: Biblioteca traduzir instruções em português estruturado 
+   para instruções em Python, com objetivo de ser aplicado como alternativa 
+   para aulas de lógica de programação para crianças e iniciantes.
+   Versão: 2.1
+   Data: 09/09/25 Atualização: 10/09/ 
+
+   Para executar deixe o arquivo jyboia.py na mesma pasta do seu projeto 
+   e adcione a linha abaixo no seu script:
+   from jiboia import *
+
 '''
-def escreva(*args, sep=' ', end='\n'):
-    print(*args, sep=sep, end=end)
+
+import inspect
+
+def escreva(*args):
+    print(*args)
+
+def pulalinha():
+    print('\n')
 
 def leia(prompt=""):
     return input(prompt)
@@ -20,27 +37,44 @@ def boleano(valor):
     return bool(valor)
 
 def executar(instrucao):
-    return lambda: eval(instrucao)
+    return lambda: instrucao
+
+'''versão velhas
+def executar(instrucao):
+    if callable(instrucao):
+        return instrucao
+    return lambda: instrucao
+
+def executar(instrucao):
+    return lambda: eval(instrucao, globals(), locals())
+'''
+def seVerdadeiro(*instrucoes):
+    return tuple(lambda instr=instr: instr() for instr in instrucoes)
+
+def seFalso(*instrucoes):
+    return tuple(lambda instr=instr: instr() for instr in instrucoes)
+
+
+#Versão nova
 
 def se(condicao, entao, senao=None):
     if condicao:
-        if callable(entao):
-            entao()
-        else:
-            escreva(entao)
+        for instrucao in entao:
+            instrucao()
     elif senao is not None:
-        if callable(senao):
-            senao()
-        else:
-            escreva(senao)
+        for instrucao in senao:
+            instrucao()
 
 
-'''def se(condicao, entao, senao=None):
+''' #Versão antiga para registro
+def se(condicao, entao, senao=None):
     if condicao:
         entao()
-    elif senao:
+    elif senao is not None:
         senao()
 '''
+
+
 def enquanto(condicao_func, corpo_func):
     while condicao_func():
         corpo_func()
